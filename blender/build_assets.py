@@ -677,7 +677,7 @@ def make_sign(q, name, label, w, h, bottom, text_size, text_z=None, post_x=None)
 
 
 def make_sign_asrs(q=1):
-    return make_sign(q, 'sign_asrs', 'ASRS', 7.0, 6.5, 2.6, 1.05, text_z=2.6 + 6.5 - 1.0)
+    return make_sign(q, 'sign_asrs', 'ASRS', 4.6, 5.8, 2.4, 1.0, text_z=2.4 + 5.8 - 0.95)
 
 
 def make_sign_qc(q=1):

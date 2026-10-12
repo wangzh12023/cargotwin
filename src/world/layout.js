@@ -63,7 +63,7 @@ export const PRESETS = {
   dispatch: { facility: 'production', target: [-20, 0, 35], az: 33, el: 40, dist: 300, fov: 30 },
   freight: { facility: 'freight', target: [100.5, 0, 141.2], az: 33.2, el: 39.6, dist: 156, fov: 30 },
   cold: { facility: 'cold', target: [-84, 0, 157.9], az: -38.4, el: 59.8, dist: 199, fov: 30 },
-  qc: { facility: 'receiving', target: [-80.2, 0, -169.3], az: 34.8, el: 41.7, dist: 97.5, fov: 30 },
+  qc: { facility: 'receiving', target: [-81.9, 0, -170.6], az: 34.1, el: 40.7, dist: 111.4, fov: 30 },
 };
 
 export const LAYERS = [

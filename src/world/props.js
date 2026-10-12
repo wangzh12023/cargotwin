@@ -27,7 +27,7 @@ const FALLBACK = {
   guard_booth: [[2.6, 2.7, 2.2, 'white']],
   conveyor: [[1.2, 0.9, 6, 'gray']],
   rack: [[9, 7.5, 1.2, 'cardboard']],
-  sign_asrs: [[7, 6.5, 0.3, 'red', 0, 2.6, 0]],
+  sign_asrs: [[4.6, 5.8, 0.3, 'red', 0, 2.4, 0]],
   sign_qc: [[6.2, 2.4, 0.3, 'red', 0, 4.2, 0]],
   rooftop_ac: [[2.4, 1.0, 1.6, 'lightgray']],
   roof_vent: [[1.8, 0.5, 1.2, 'gray']],

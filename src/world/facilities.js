@@ -249,18 +249,20 @@ export class District {
 
   nrow() {
     const b = 'nrow';
-    // Automated storage: tall walls on three sides, open top, low front wall with the ASRS sign
+    // Automated storage: tall plain walls on three sides, open top, low ribbed front wall with the ASRS sign
     const ax = 38, az = 31, aw = 38, ad = 30, ah = 10;
-    this.slab('ribWhite', b, ax, az - ad / 2 + 0.25, aw, ah, 0.5, 0, this.batch, { uv: [3.2, ah], noTop: false });
-    this.slab('ribWhite', b, ax - aw / 2 + 0.25, az, 0.5, ah, ad, 0, this.batch, { uv: [3.2, ah], noTop: false });
-    this.slab('ribWhite', b, ax + aw / 2 - 0.25, az, 0.5, ah, ad, 0, this.batch, { uv: [3.2, ah], noTop: false });
-    this.slab('ribWhite', b, ax - 12.5, az + ad / 2 - 0.25, 13, 1.3, 0.4, 0, this.batch, { uv: [1.6, 1.3], noTop: false });
-    this.slab('ribWhite', b, ax + 12.5, az + ad / 2 - 0.25, 13, 1.3, 0.4, 0, this.batch, { uv: [1.6, 1.3], noTop: false });
+    this.slab('parapet', b, ax, az - ad / 2 + 0.25, aw, ah, 0.5, 0, this.batch, { noTop: false });
+    this.slab('parapet', b, ax - aw / 2 + 0.25, az, 0.5, ah, ad, 0, this.batch, { noTop: false });
+    this.slab('parapet', b, ax + aw / 2 - 0.25, az, 0.5, ah, ad, 0, this.batch, { noTop: false });
+    // low front walls run up to the sign posts, leaving a narrow gate under the ASRS sign
+    this.slab('ribWhite', b, ax - 10.5, az + ad / 2 - 0.25, 16.5, 1.3, 0.4, 0, this.batch, { uv: [1.6, 1.3], noTop: false });
+    this.slab('ribWhite', b, ax + 10.5, az + ad / 2 - 0.25, 16.5, 1.3, 0.4, 0, this.batch, { uv: [1.6, 1.3], noTop: false });
     this.flat('floor', b, ax, az, aw - 1, ad - 1, 0.03);
-    this.prop('rack', b, ax - 13, az - 6, Math.PI / 2);
-    this.prop('rack', b, ax - 13, az + 5, Math.PI / 2);
-    this.prop('rack', b, ax + 13, az - 6, Math.PI / 2);
-    this.prop('rack', b, ax + 13, az + 5, Math.PI / 2);
+    // dense rack blocks either side of the crane aisle: south-facing racks in back-to-back pairs,
+    // three pairs deep (the reference shows rows of cartons facing the viewer)
+    for (const dx of [-12.5, 12.5]) {
+      for (const z of [az - 5.8, az - 4.2, az + 0.2, az + 1.8, az + 6.2, az + 7.8]) this.prop('rack', b, ax + dx, z, 0);
+    }
     this.prop('stacker_crane', b, ax + 7, az - 1, 0);
     this.prop('stacker_crane', b, ax - 7, az - 7, Math.PI);
     this.prop('sign_asrs', b, ax, az + ad / 2 - 1.2, 0);
@@ -283,7 +285,8 @@ export class District {
         this.prop('scanner_arch', b, rx + 9, rz + 1, 0, { sx: 1.2, sy: 1.4 });
         this.slab('parapet', b, rx, rz - 2, 0.6, 4.2, rd - 9, 0, this.batch, { noTop: false });
         for (const lx of [rx - 4.5, rx + 4.5]) this.flat('tape', b, lx, rz + 2, 0.12, rd - 6, 0.05);
-        { const [sx, sz] = this.W(b, rx, rz + rd / 2 - 0.6); this.cutProps.get('receiving').add('sign_qc', sx, sz, 0, { y: Y }); }
+        // the QC gate spans the door opening and reaches the wall tops, like the reference cutaway
+        { const [sx, sz] = this.W(b, rx, rz + rd / 2 - 0.6); this.cutProps.get('receiving').add('sign_qc', sx, sz, 0, { y: Y, scale: 1.6 }); }
         this.prop('box', b, rx + 9, rz + 4, 0, { y: 0.9 });
         this.prop('box', b, rx - 9, rz - 5, 0, { y: 0.9 });
         this.prop('box', b, rx - 9, rz - 10, 0, { y: 0.9 });
@@ -292,18 +295,25 @@ export class District {
     });
     this.shed(b, 'returnable', { x: 124, z: 32, w: 38, d: 30, label: 'RETURN' });
 
-    // yard in front of the sheds: pallets at the doors, forklifts, AMRs, two truck queues
-    this.pallets(b, 66, 56, 4, 2, 2.2, 2.0, ['pallet_boxes', 'pallet_boxes_mixed'], 3);
-    this.pallets(b, 110, 56, 4, 2, 2.2, 2.0, ['pallet_boxes', 'pallet_boxes_mixed', 'pallet_stack'], 4);
+    // yard in front of the sheds, laid out from the reference QC close-up: pallet groups west of the
+    // gate and against the shed fronts, rows of loose cartons, a truck queue waiting for inspection,
+    // and two more truck queues further south
+    this.pallets(b, 52.4, 51.6, 2, 3, 1.7, 2.0, ['pallet_boxes', 'pallet_boxes_mixed'], 3);
+    this.pallets(b, 63.2, 50.4, 2, 3, 1.7, 2.0, ['pallet_boxes', 'pallet_boxes_mixed'], 6);
+    this.pallets(b, 93.4, 49.6, 2, 2, 1.7, 2.0, ['pallet_boxes', 'pallet_boxes_mixed'], 4);
+    this.pallets(b, 103.6, 48.4, 2, 2, 1.7, 2.0, ['pallet_boxes', 'pallet_boxes_mixed', 'pallet_stack'], 7);
+    for (let k = 0; k < 7; k++) this.prop('box', b, 66.6 + k * 1.35, 68.2 - k * 0.23, k * 0.3, { scale: 1.7 });
+    for (let k = 0; k < 4; k++) this.prop('box', b, 85.6 + k * 1.6, 65.6 - k * 0.27, k * 0.4, { scale: 1.7 });
     this.pallets(b, 52, 74, 6, 1, 1.5, 1.6, ['pallet_stack'], 5);
-    this.flat('pad', b, 95, 66, 6, 5, 0.03);
+    this.flat('pad', b, 89, 56, 6, 5, 0.03);
     this.flat('pad', b, 138, 64, 6, 5, 0.03);
+    for (const x of [83.5, 94.5, 105.5]) this.prop('truck_box', b, x, 71, -Math.PI / 2);
     for (const [x, kind] of [[62, 'truck_flatbed'], [77, 'truck_box'], [92, 'truck_box'], [107, 'truck_box'], [122, 'truck_box'], [137, 'truck_box']]) this.prop(kind, b, x, 92, -Math.PI / 2);
     for (const [x, kind] of [[84, 'truck_flatbed'], [99, 'truck_box'], [114, 'truck_box'], [129, 'truck_box']]) this.prop(kind, b, x, 106, -Math.PI / 2);
-    this.prop('forklift_loaded', b, 76, 66, 0.4);
-    this.prop('forklift', b, 101, 70, -1.2);
+    this.prop('forklift', b, 72, 57.5, 0.5);
+    this.prop('forklift_loaded', b, 82.6, 63.6, 2.36);
     this.prop('forklift', b, 120, 66, 2.6);
-    this.prop('amr_cart', b, 140, 60, 1.2);
+    this.prop('amr_cart', b, 107.8, 53.5, 1.2);
     this.prop('amr', b, 100, 58, 0.3);
     this.prop('guard_booth', b, 92, 122, 0);
     this.prop('barrier', b, 95, 126, 0);
