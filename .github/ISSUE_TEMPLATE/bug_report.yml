@@ -1,0 +1,24 @@
+name: 🐛 Bug report
+description: Something looks wrong or doesn't work
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you see, and what did you expect instead? A screenshot helps a lot.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the live demo (or `npm run dev`)
+        2. Click …
+        3. See …
+  - type: input
+    id: env
+    attributes:
+      label: Browser / OS / GPU
+      placeholder: Chrome 141 · Windows 11 · RTX 4050

@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.vite/
+
+# local reference material (third-party video, extracted frames, comparison shots) - never committed
+_ref/
+/*.mp4
+/*.mov
+
+# blender
+*.blend1
+blender/__pycache__/
+blender/preview/
+
+.DS_Store
+Thumbs.db
